@@ -1,0 +1,29 @@
+/* 
+        //square
+        grid.setCell(0, 0, 1);
+        grid.setCell(0, 1, 2);
+        grid.setCell(0, 2, 3);
+        grid.setCell(1, 0, 4);
+        grid.setCell(1, 1, 5);
+        grid.setCell(1, 2, 6);
+        grid.setCell(2, 0, 7);
+        grid.setCell(2, 1, 8);
+        grid.setCell(2, 2, 9);
+        //column
+        grid.setCell(0, 3, 4);
+        grid.setCell(0, 4, 5);
+        grid.setCell(0, 5, 6);
+        grid.setCell(0, 6, 7);
+        grid.setCell(0, 7, 8);
+        grid.setCell(0, 8, 9);
+        //row 
+        grid.setCell(3,0, 2);
+        grid.setCell(4,0, 3);
+        grid.setCell(5,0, 5);
+        grid.setCell(6,0, 6);
+        grid.setCell(7,0, 8);
+        grid.setCell(8,0, 9);
+        //videre test
+        grid.setCell(6, 6, 1);
+        grid.setCell(6, 7, 1);
+        */
