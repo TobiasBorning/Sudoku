@@ -12,6 +12,9 @@ public class MistakeChecker implements SudokuObserver {
         //System.out.println(checkSquareMistake());
         //System.out.println(checkRowMistake());
         //System.out.println(checkColumnMistake());
+        if (checkMistake()) {
+            System.out.println("Illegal Placement");
+        }
     }
 
     public boolean checkSquareMistake() {

@@ -72,6 +72,7 @@ public class RecursiveSolver extends MistakeChecker{
     public void iterationAlgorithm(int column, int row) {
         System.out.println(column+","+row+" : " + map.get(column+","+row));
         System.out.println(internalgrid);
+
         if (sortedKeys().indexOf(column+","+row) < sortedKeys().size()) {
             boolean back = false;
             Integer current = internalgrid.getCell(column,row);
@@ -81,39 +82,37 @@ public class RecursiveSolver extends MistakeChecker{
             }
             else {
                 for (int i = 0; i <= valuelist.size(); i++) {
-                if (i == valuelist.size() && (internalgrid.getCell(column, row) == null || internalgrid.getCell(column, row) == current)) {
-                    internalgrid.setCell(column, row, null);
-                    back = true;
-                    break;
-                }
-                try {
-                    if (current != null) {
-                        int v = valuelist.indexOf(current);
-                        if (valuelist.get(i) <= current && v != valuelist.size()-1) {
-                            i = v+1;
+                    if (i == valuelist.size() && (internalgrid.getCell(column, row) == null || internalgrid.getCell(column, row) == current)) {
+                        internalgrid.setCell(column, row, null);
+                        back = true;
+                        break;
+                    }
+                    try {
+                        if (current != null) {
+                            int v = valuelist.indexOf(current);
+                            if (valuelist.get(i) <= current && v != valuelist.size()-1) {
+                                i = v+1;
+                            }
+                            else {
+                                i = valuelist.size()-1;
+                            }
+                        }
+                    }
+                    catch (IndexOutOfBoundsException e) {
+
+                    }
+                    if (internalgrid.getCell(column, row) == null || internalgrid.getCell(column, row) == current) {
+                        internalgrid.setCell(column, row, valuelist.get(i));
+                        if (checkMistake()){
+                            internalgrid.setCell(column, row, null);
                         }
                         else {
-                            i = valuelist.size()-1;
+                            System.out.println("Set: (" + column+","+row+"): " +valuelist.get(i) + " ," + valuelist + " init: "+ init);
+                            System.out.println(internalgrid);
                         }
                     }
                 }
-                catch (IndexOutOfBoundsException e) {
-
-                }
-                if (internalgrid.getCell(column, row) == null || internalgrid.getCell(column, row) == current) {
-                    internalgrid.setCell(column, row, valuelist.get(i));
-                    if (checkMistake()){
-                        internalgrid.setCell(column, row, null);
-                    }
-                    else {
-                        System.out.println("Set: (" + column+","+row+"): " +valuelist.get(i) + " ," + valuelist + " init: "+ init);
-                        System.out.println(internalgrid);
-                    }
-                    
-                }
             }
-            }
-            
             
             if (!completedGrid()) {
                 String tmp;
@@ -124,22 +123,19 @@ public class RecursiveSolver extends MistakeChecker{
                     tmp = keyIterator.next();
                 }
                 String[] tmp2 = tmp.split(",");
+                if (map.get(column+","+row).size() > 4) {
+                    
+                }
                 column = Integer.parseInt(tmp2[0]);
                 row = Integer.parseInt(tmp2[1]);
                 iterationAlgorithm(column, row);
             }
-            else {
-                System.out.println("Solved");
+            else {  
+                    System.out.println("Solved");
+                    System.out.println(internalgrid);
             }
-            
 
-            
-    
-        }
-        else {
-            System.out.println("Ferdig");
-        }
-            
+        }   
     }
 
     public List<String> sortedKeys() {
