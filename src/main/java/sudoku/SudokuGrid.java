@@ -1,5 +1,6 @@
 package sudoku;
 
+import java.io.FileNotFoundException;
 //import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +10,34 @@ public class SudokuGrid {
     private final int columnCount = 9;
     private List<SudokuObserver> observers = new ArrayList<SudokuObserver>();
     private List<Integer> gridInit;
+    private FileManager fileManager = new FileManager();
 
     public SudokuGrid(){
         RandomBoard init = new RandomBoard();
         List<Integer> randomboard = init.getRandomBoard();
         SetGrid(randomboard);
         gridInit = new ArrayList<Integer>(randomboard);
+    }
+
+    public SudokuGrid(String filename) {
+        List<Integer> loadedgrid;
+        List<Integer> initgrid;
+        try {
+            loadedgrid = fileManager.readBoardFromFile(filename).get(0);
+        }
+        catch (FileNotFoundException e){
+            System.out.println("File not found");
+            loadedgrid = null;
+        }
+        try {
+            initgrid = fileManager.readBoardFromFile(filename).get(1);
+        }
+        catch (FileNotFoundException e){
+            System.out.println("File not found");
+            initgrid = null;
+        }
+        SetGrid(loadedgrid);
+        gridInit = new ArrayList<Integer>(initgrid);
     }
 
     public void SetGrid(List<Integer> grid) {
@@ -27,7 +50,7 @@ public class SudokuGrid {
         return grid;
     }
 
-    public List<Integer> GetInititalGrid() {
+    public List<Integer> GetInitialGrid() {
         return gridInit;
     }
 
@@ -92,23 +115,29 @@ public class SudokuGrid {
 
         grid.addObserver(mistakeChecker);
         grid.addObserver(solve);
-        grid.setCell(3, 3, 0);
+        
         //System.out.println(grid.toString());
+        grid.setCell(8, 8, 6);
 
-        /* 
         FileManager mgr = new FileManager();
+        mgr.writeBoardToFile(grid, "test1.txt");
         try {
-            grid.SetGrid(mgr.readBoardFromFile("test1.txt"));
+            grid.SetGrid(mgr.readBoardFromFile("test1.txt").get(0));
         }
         catch (FileNotFoundException e){
             System.out.println("filen finnes ikke");
         }
-        */
+
+        grid = new SudokuGrid("test1.txt");
+
+        System.out.println(grid.GetGrid());
+        System.out.println(grid.GetInitialGrid());
+
         //grid.setCell(3, 3, 8);
         //System.out.println(grid.toString());
         //System.out.println(mistakeChecker.getLegalValues(3, 3));
         
-        solve.solve();
+        //solve.solve();
         
     }
 }

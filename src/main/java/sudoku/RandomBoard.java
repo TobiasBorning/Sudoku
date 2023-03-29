@@ -35,7 +35,7 @@ public class RandomBoard {
 
     public List<Integer> getRandomBoard() {
         try {
-           CollectBoards("sudokuEasy.txt"); 
+            CollectBoards("sudokuEasy.txt"); 
         }
         catch (FileNotFoundException e){
             System.out.println("file not found");
@@ -44,6 +44,7 @@ public class RandomBoard {
         int board = rn.nextInt(0,50);
         return boards.get(board);
     }
+
 
     public static void main(String[] args) {
         RandomBoard rn = new RandomBoard();

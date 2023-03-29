@@ -11,11 +11,19 @@ public class FileManager {
 
     public void writeBoardToFile(SudokuGrid grid, String filename) {
         List<Integer> board = grid.GetGrid();
+        List<Integer> initboard = grid.GetInitialGrid();
         try {
             PrintWriter writer = new PrintWriter(filename);
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
                     writer.write(""+board.get((i*9)+j)+",");
+                }
+                writer.write("\n");
+            }
+            writer.write("init:\n");
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    writer.write(""+initboard.get((i*9)+j)+",");
                 }
                 writer.write("\n");
             }
@@ -28,22 +36,30 @@ public class FileManager {
         }
     }
 
-    public List<Integer> readBoardFromFile(String filename) throws FileNotFoundException {
+    public List<List<Integer>> readBoardFromFile(String filename) throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(filename));
         List<Integer> loadedGrid = new ArrayList<Integer>();
+        List<Integer> initialGrid = new ArrayList<Integer>();
+        List<List<Integer>> outArray = new ArrayList<List<Integer>>(List.of(loadedGrid,initialGrid));
+        int index = 0;
         while(scanner.hasNextLine()) {
             String line = scanner.nextLine();
             String[] lineInfo = line.split(","); 
+            if (line.equals("init:")) {
+                line = scanner.nextLine();
+                lineInfo = line.split(",");
+                index = 1;
+            }
             for (int i = 0; i < 9; i++) {
                 if (lineInfo[i].equals("null")) {
-                    loadedGrid.add(null);
+                    outArray.get(index).add(null);
                 }
                 else {
-                    loadedGrid.add(Integer.parseInt(lineInfo[i]));
+                    outArray.get(index).add(Integer.parseInt(lineInfo[i]));
                 }
             }
         }
         scanner.close(); // har ikke .flush()
-        return loadedGrid;
+        return outArray;
     }
 }

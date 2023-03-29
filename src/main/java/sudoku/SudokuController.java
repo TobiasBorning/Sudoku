@@ -1,11 +1,14 @@
 package sudoku;
 
+import java.util.List;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
@@ -25,22 +28,35 @@ public class SudokuController {
     private GridPane sudokuGrid;
     @FXML
     private Label feedbackLabel;
+    @FXML
+    private Button saveButton, loadButton;
+    @FXML
+    private TextField saveFileInput, loadFileInput;
 
-    private SudokuGrid grid = new SudokuGrid();
-    MistakeChecker mistakeChecker = new MistakeChecker();
-        
+    private SudokuGrid grid;
+    private MistakeChecker mistakeChecker = new MistakeChecker();
+    private FileManager fileManager = new FileManager(); 
     
     public void initialize() {
-
+        boardToScene(null);
         grid.addObserver(mistakeChecker);
+    }
 
+    private void boardToScene(String filename) {
+        if (filename == null) {
+            grid = new SudokuGrid();
+        }
+        else {
+            grid = new SudokuGrid(filename);
+        }
         for (int c = 0; c < 9; c++) {
             for (int r = 0; r < 9; r++) { 
                 TextField tmp = new TextField();
                 tmp.setId(""+c+","+r);
                 tmp.setMinHeight(40.0);
-
-                if (grid.getCell(c, r) != null) {
+                List<Integer> initgrid = grid.GetInitialGrid();
+                
+                if (grid.getCell(c, r) != null && initgrid.get(r*9 + c) == grid.getCell(c, r)) {
                     tmp.setText(""+grid.getCell(c, r));
                     //lås rute
                     BooleanProperty isChecked = new SimpleBooleanProperty(false);
@@ -51,10 +67,15 @@ public class SudokuController {
                     Background background = new Background(backgroundFill);
                     tmp.setBackground(background);
                     //endre farge
-                    String textColor = "#1111dd";
+                    String textColor = "#1111cc";
                     tmp.setStyle("-fx-text-fill: " + textColor + ";");
                 }
-
+                else if (grid.getCell(c, r) == null) {
+                    tmp.setText("");
+                }
+                else {
+                    tmp.setText(""+grid.getCell(c, r));
+                }
                 //set border
                 Border border;
                 BorderStroke border1px = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1), new Insets(0, 0, 0, 0));
@@ -77,7 +98,6 @@ public class SudokuController {
     }
 
     public void setCell(ActionEvent e) {
-        System.out.println("suksess");
         TextField cell = (TextField) e.getSource();
         int column = Integer.parseInt(cell.getId().split(",")[0]);
         int row =  Integer.parseInt(cell.getId().split(",")[1]);
@@ -85,6 +105,7 @@ public class SudokuController {
         System.out.println(column +"," + row + " : " + value);
 
         grid.setCell(column, row, value);
+        System.out.println(mistakeChecker.checkMistake());
         if (mistakeChecker.checkMistake()){
             grid.setCell(column, row, null);
             cell.setText(null);
@@ -93,6 +114,24 @@ public class SudokuController {
         else {
             feedbackLabel.setText("");
         }
+        
+    }
+
+    public void saveFile(){
+        String file = saveFileInput.getText() + ".txt";
+        fileManager.writeBoardToFile(grid, file);
+        saveFileInput.setText("");
+    }
+
+    public void loadFile() {
+        String file = loadFileInput.getText() + ".txt";
+        if (file.equals(".txt")) {
+            boardToScene(null);
+        }
+        else {
+            boardToScene(file);
+        }
+        loadFileInput.setText("");
         
     }
 
