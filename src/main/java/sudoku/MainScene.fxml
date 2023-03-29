@@ -32,65 +32,23 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <VBox prefHeight="597.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sudoku.SudokuController">
   <children>
-    <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-        <Label alignment="CENTER" layoutX="243.0" layoutY="77.0" prefHeight="23.0" prefWidth="154.0" style="&#10;" text="Sudoku" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
+        <Label alignment="CENTER" layoutX="243.0" layoutY="33.0" prefHeight="23.0" prefWidth="154.0" style="&#10;" text="Sudoku" textAlignment="CENTER" textFill="#656161" wrapText="false">
           <font>
-            <Font size="18.0" />
+            <Font size="31.0" />
           </font>
         </Label>
             <GridPane id="sudokuGrid" fx:id="sudokuGrid" gridLinesVisible="true" layoutX="145.0" layoutY="170.0" prefHeight="350.0" prefWidth="350.0">
@@ -116,12 +74,18 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
-               <children>
-                
-                <TextField fx:id="c0r0" prefHeight="40.0" prefWidth="40.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                  
-               </children>
             </GridPane>
+            <Label fx:id="feedbackLabel" alignment="CENTER" layoutX="243.0" layoutY="137.0" prefHeight="23.0" prefWidth="154.0" style="&#10;" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
+            <Line endX="300.0" endY="2.94561767578125" layoutX="195.0" layoutY="285.0" startX="-49.99998474121094" startY="2.94561767578125" strokeWidth="2.0" />
+            <Line endX="290.0" endY="107.90420532226562" layoutX="205.0" layoutY="295.0" startX="-59.99998474121094" startY="107.90420532226562" strokeWidth="2.0" />
+            <Line endX="55.66064453125" endY="225.0" layoutX="205.0" layoutY="295.0" startX="55.66064453125" startY="-125.60545349121094" strokeWidth="2.0" />
+            <Line endX="79.21170043945312" endY="53.0" layoutX="300.0" layoutY="117.0" startX="79.21170043945312" startY="403.0" strokeWidth="2.0" />
+            <Button layoutX="239.0" layoutY="92.0" mnemonicParsing="false" text="Load" />
+            <Button layoutX="356.0" layoutY="92.0" mnemonicParsing="false" text="Save" />
       </children>
     </AnchorPane>
   </children>
