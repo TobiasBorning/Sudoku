@@ -13,7 +13,8 @@ public class FileManager {
         List<Integer> board = grid.GetGrid();
         List<Integer> initboard = grid.GetInitialGrid();
         try {
-            PrintWriter writer = new PrintWriter(filename);
+            File file = new File ("/Users/tobiasborning/NTNU/Objekt/prosjekt/TDT4100-prosjekt-tobiaslb/src/main/java/sudoku/sudokusaves/"+filename);
+            PrintWriter writer = new PrintWriter(file);
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
                     writer.write(""+board.get((i*9)+j)+",");
@@ -37,7 +38,8 @@ public class FileManager {
     }
 
     public List<List<Integer>> readBoardFromFile(String filename) throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File(filename));
+        File file = new File ("/Users/tobiasborning/NTNU/Objekt/prosjekt/TDT4100-prosjekt-tobiaslb/src/main/java/sudoku/sudokusaves/"+filename);
+        Scanner scanner = new Scanner(file);
         List<Integer> loadedGrid = new ArrayList<Integer>();
         List<Integer> initialGrid = new ArrayList<Integer>();
         List<List<Integer>> outArray = new ArrayList<List<Integer>>(List.of(loadedGrid,initialGrid));

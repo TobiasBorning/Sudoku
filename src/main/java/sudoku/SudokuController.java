@@ -1,5 +1,6 @@
 package sudoku;
 
+import javafx.event.EventHandler;
 import java.util.List;
 
 import javafx.beans.property.BooleanProperty;
@@ -11,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
@@ -39,7 +41,7 @@ public class SudokuController {
     
     public void initialize() {
         boardToScene(null);
-        grid.addObserver(mistakeChecker);
+        
     }
 
     private void boardToScene(String filename) {
@@ -68,7 +70,7 @@ public class SudokuController {
                     tmp.setBackground(background);
                     //endre farge
                     String textColor = "#1111cc";
-                    tmp.setStyle("-fx-text-fill: " + textColor + ";");
+                    tmp.setStyle("-fx-text-fill: " + textColor + ";6åp  ");
                 }
                 else if (grid.getCell(c, r) == null) {
                     tmp.setText("");
@@ -90,31 +92,53 @@ public class SudokuController {
                 tmp.setAlignment(Pos.CENTER);
 
                 //kall funksjon på klikk
-                tmp.setOnAction(this::setCell);
+                //tmp.setOnAction(this::setCell);
+                tmp.setOnKeyTyped(new EventHandler<KeyEvent>() {
+                    public void handle(KeyEvent keyEvent) {
+                        setCell(keyEvent);
+                    }
+                });
 
                 sudokuGrid.add(tmp, c, r);
             }
         }
+        grid.addObserver(mistakeChecker);
     }
 
-    public void setCell(ActionEvent e) {
+    public void setCell(KeyEvent e) {
         TextField cell = (TextField) e.getSource();
-        int column = Integer.parseInt(cell.getId().split(",")[0]);
-        int row =  Integer.parseInt(cell.getId().split(",")[1]);
-        int value = Integer.parseInt(cell.getText());
-        System.out.println(column +"," + row + " : " + value);
+        try{
+            int column = Integer.parseInt(cell.getId().split(",")[0]);
+            int row =  Integer.parseInt(cell.getId().split(",")[1]);
+            int value = Integer.parseInt(cell.getText());
 
-        grid.setCell(column, row, value);
-        System.out.println(mistakeChecker.checkMistake());
-        if (mistakeChecker.checkMistake()){
-            grid.setCell(column, row, null);
+            System.out.println(column +"," + row + " : " + value);
+
+            if (value > 0 && value < 10) {
+                grid.setCell(column, row, value);
+                System.out.println(mistakeChecker.checkMistake());
+
+                if (mistakeChecker.checkMistake()){
+                    grid.setCell(column, row, null);
+                    cell.setText(null);
+                    feedbackLabel.setText("Illegal Placement of: " + value);
+                }
+                else {
+                    feedbackLabel.setText("");
+                }
+            }
+            else {
+                feedbackLabel.setText("Illegal Value");
+                grid.setCell(column, row, null);
+                cell.setText(null);
+            }
+        }
+        //håndterer input som ikke er tall
+        catch (NumberFormatException illegalInput) {
+            feedbackLabel.setText("Illegal input format");
             cell.setText(null);
-            feedbackLabel.setText("Illegal Placement");
         }
-        else {
-            feedbackLabel.setText("");
-        }
-        
+            
     }
 
     public void saveFile(){
