@@ -4,16 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MistakeChecker implements SudokuObserver {
-    protected SudokuGrid internalgrid;
-
+    protected SudokuGrid internalgrid = new SudokuGrid();
+    protected SudokuGrid initialGrid = new SudokuGrid();
     @Override
     public void gridChanged(SudokuGrid grid) {
-        internalgrid = grid;
+        internalgrid.SetGrid(grid.GetGrid());
         //System.out.println(checkSquareMistake());
         //System.out.println(checkRowMistake());
         //System.out.println(checkColumnMistake());
+        /*
         if (checkMistake()) {
             System.out.println("Illegal Placement");
+        } 
+        */
+        if (completedGrid()) {
+            System.out.println("Solved!");
         }
     }
 

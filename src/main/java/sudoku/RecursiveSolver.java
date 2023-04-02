@@ -9,26 +9,33 @@ import java.util.Map.Entry;
 
 public class RecursiveSolver extends MistakeChecker{
     HashMap<String,List<Integer>> map;
+    
     ListIterator<String> keyIterator;
     int placements = 0;
-    String init = "";
+    int test = 0;
 
     public void place(int column, int row, int iterations, boolean enableIt) {
+        test++;
         List<Integer> legal = new ArrayList<>(getLegalValues(column, row));
         //System.out.println("("+column+","+row+")"+legal.toString());
         String cr = column+","+row;
         map.put(cr,legal);
-        
-        if (legal.size() == 1 && !enableIt){
+        Integer current = internalgrid.getCell(column, row);
+
+        if (legal.size() == 1 && current != legal.get(0) && current == null){
             placements++;
             internalgrid.setCell(column, row, legal.get(0));
             System.out.println(internalgrid.toString());
+            System.out.println("Placed " + legal.get(0) + " at (" + cr  +") Placements: "+ placements);
         }
         if (enableIt) {
+            
+            /*
             String tmp = keyIterator.next();
             String[] tmp2 = tmp.split(",");
             init = tmp;
             iterationAlgorithm(Integer.parseInt(tmp2[0]),Integer.parseInt(tmp2[1]));
+            */
         }
         //loop
         if (column < 8){
@@ -45,21 +52,22 @@ public class RecursiveSolver extends MistakeChecker{
         }
 
         //stop switch
+        /* 
         if (iterations == 7) {
             keyIterator = sortedKeys().listIterator();
             place(column, row, iterations, true);
         }
         else if (iterations > 7 && iterations < 40) {
             place(column, row, iterations, true);
-        }
-        else if (!completedGrid() && enableIt == false) {
+        }*/
+        if (iterations < 7 && !completedGrid()) {
             //System.out.println(internalgrid.toString());
             place(column, row, iterations, false);
         }
         else {
             System.out.println("Ferdig");
             System.out.println("Iterajoner:" + iterations +" Placements: "+placements);
-
+            System.out.println(test);
             System.out.println(internalgrid.toString());            
             
         }
@@ -70,7 +78,7 @@ public class RecursiveSolver extends MistakeChecker{
     }
 
     public void iterationAlgorithm(int column, int row) {
-        System.out.println(column+","+row+" : " + map.get(column+","+row));
+        //System.out.println(column+","+row+" : " + map.get(column+","+row));
         System.out.println(internalgrid);
 
         if (sortedKeys().indexOf(column+","+row) < sortedKeys().size()) {
@@ -107,7 +115,7 @@ public class RecursiveSolver extends MistakeChecker{
                             internalgrid.setCell(column, row, null);
                         }
                         else {
-                            System.out.println("Set: (" + column+","+row+"): " +valuelist.get(i) + " ," + valuelist + " init: "+ init);
+                            //System.out.println("Set: (" + column+","+row+"): " +valuelist.get(i) + " ," + valuelist + " init: "+ init);
                             System.out.println(internalgrid);
                         }
                     }
@@ -123,8 +131,8 @@ public class RecursiveSolver extends MistakeChecker{
                     tmp = keyIterator.next();
                 }
                 String[] tmp2 = tmp.split(",");
-                if (map.get(column+","+row).size() > 4) {
-                    
+                if (map.get(column+","+row).size() > 3) {
+                    System.out.println("");
                 }
                 column = Integer.parseInt(tmp2[0]);
                 row = Integer.parseInt(tmp2[1]);

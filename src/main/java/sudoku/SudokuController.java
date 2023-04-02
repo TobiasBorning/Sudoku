@@ -5,7 +5,6 @@ import java.util.List;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -102,10 +101,13 @@ public class SudokuController {
                 sudokuGrid.add(tmp, c, r);
             }
         }
+ 
+        
         grid.addObserver(mistakeChecker);
     }
 
     public void setCell(KeyEvent e) {
+
         TextField cell = (TextField) e.getSource();
         try{
             int column = Integer.parseInt(cell.getId().split(",")[0]);
@@ -156,7 +158,7 @@ public class SudokuController {
             boardToScene(file);
         }
         loadFileInput.setText("");
-        
     }
+
 
 }

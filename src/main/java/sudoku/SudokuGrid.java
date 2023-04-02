@@ -109,17 +109,17 @@ public class SudokuGrid {
     }
 
     public static void main(String[] args) {
-        SudokuGrid grid = new SudokuGrid();
+        SudokuGrid grid = new SudokuGrid("test1.txt");
         MistakeChecker mistakeChecker = new MistakeChecker();
         RecursiveSolver solve = new RecursiveSolver();
+        FileManager mgr = new FileManager();
 
         grid.addObserver(mistakeChecker);
         grid.addObserver(solve);
         
         //System.out.println(grid.toString());
-        grid.setCell(8, 8, 6);
 
-        FileManager mgr = new FileManager();
+        
         mgr.writeBoardToFile(grid, "test1.txt");
         try {
             grid.SetGrid(mgr.readBoardFromFile("test1.txt").get(0));
@@ -127,17 +127,17 @@ public class SudokuGrid {
         catch (FileNotFoundException e){
             System.out.println("filen finnes ikke");
         }
-
         grid = new SudokuGrid("test1.txt");
-
-        System.out.println(grid.GetGrid());
-        System.out.println(grid.GetInitialGrid());
+        
 
         //grid.setCell(3, 3, 8);
         //System.out.println(grid.toString());
         //System.out.println(mistakeChecker.getLegalValues(3, 3));
         
-        //solve.solve();
+        solve.solve();
+        
+    
+        
         
     }
 }
