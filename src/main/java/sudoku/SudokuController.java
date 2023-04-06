@@ -56,7 +56,7 @@ public class SudokuController {
                 tmp.setId(""+c+","+r);
                 tmp.setMinHeight(40.0);
                 List<Integer> initgrid = grid.GetInitialGrid();
-                
+                //fastsatte ruter
                 if (grid.getCell(c, r) != null && initgrid.get(r*9 + c) == grid.getCell(c, r)) {
                     tmp.setText(""+grid.getCell(c, r));
                     //lås rute
@@ -69,11 +69,13 @@ public class SudokuController {
                     tmp.setBackground(background);
                     //endre farge
                     String textColor = "#1111cc";
-                    tmp.setStyle("-fx-text-fill: " + textColor + ";6åp  ");
+                    tmp.setStyle("-fx-text-fill: " + textColor);
                 }
+                //tomme ruter
                 else if (grid.getCell(c, r) == null) {
                     tmp.setText("");
                 }
+                //ruter som kan endres
                 else {
                     tmp.setText(""+grid.getCell(c, r));
                 }
@@ -106,17 +108,22 @@ public class SudokuController {
         grid.addObserver(mistakeChecker);
     }
 
-    public void setCell(KeyEvent e) {
+    public void setCell(KeyEvent event) {
 
-        TextField cell = (TextField) e.getSource();
-        try{
-            int column = Integer.parseInt(cell.getId().split(",")[0]);
-            int row =  Integer.parseInt(cell.getId().split(",")[1]);
-            int value = Integer.parseInt(cell.getText());
+        TextField cell = (TextField) event.getSource();
+        int column = Integer.parseInt(cell.getId().split(",")[0]);
+        int row =  Integer.parseInt(cell.getId().split(",")[1]);
+
+        try {
+
+            Integer value;
+            value = Integer.parseInt(cell.getText());
+            
 
             System.out.println(column +"," + row + " : " + value);
+            
+            try {
 
-            if (value > 0 && value < 10) {
                 grid.setCell(column, row, value);
                 System.out.println(mistakeChecker.checkMistake());
 
@@ -129,16 +136,24 @@ public class SudokuController {
                     feedbackLabel.setText("");
                 }
             }
-            else {
+            catch (IllegalArgumentException illegalValue) {
+
                 feedbackLabel.setText("Illegal Value");
                 grid.setCell(column, row, null);
-                cell.setText(null);
+                if (cell.isEditable()) { //hindrer tab sletting
+                    cell.setText(null);
+                }
+                
             }
         }
         //håndterer input som ikke er tall
         catch (NumberFormatException illegalInput) {
+            grid.setCell(column, row , null);
             feedbackLabel.setText("Illegal input format");
             cell.setText(null);
+        }
+        if (mistakeChecker.checkWin()) {
+            feedbackLabel.setText("Solved!");
         }
             
     }
@@ -152,10 +167,10 @@ public class SudokuController {
     public void loadFile() {
         String file = loadFileInput.getText() + ".txt";
         if (file.equals(".txt")) {
-            boardToScene(null);
+            boardToScene(null); //laster et random brett ved tom input
         }
         else {
-            boardToScene(file);
+            boardToScene(file); 
         }
         loadFileInput.setText("");
     }

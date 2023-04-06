@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MistakeChecker implements SudokuObserver {
-    protected SudokuGrid internalgrid = new SudokuGrid();
-    protected SudokuGrid initialGrid = new SudokuGrid();
-    @Override
+    protected SudokuGrid internalgrid;
+    
     public void gridChanged(SudokuGrid grid) {
-        internalgrid.SetGrid(grid.GetGrid());
+        
+        internalgrid = new SudokuGrid(grid);
+
         //System.out.println(checkSquareMistake());
         //System.out.println(checkRowMistake());
         //System.out.println(checkColumnMistake());
@@ -20,6 +21,10 @@ public class MistakeChecker implements SudokuObserver {
         if (completedGrid()) {
             System.out.println("Solved!");
         }
+    }
+
+    public SudokuGrid getInternalGrid() {
+        return internalgrid;
     }
 
     public boolean checkSquareMistake() {
@@ -41,7 +46,7 @@ public class MistakeChecker implements SudokuObserver {
         return false;
     }
 
-    public boolean checkColumnMistake() {
+    public boolean checkRowMistake() {
         for (int r = 0; r < 9; r++) {
             List<Integer> tmp = new ArrayList<Integer>();
             for (int c = 0; c < 9; c++) {
@@ -55,7 +60,7 @@ public class MistakeChecker implements SudokuObserver {
         return false;
     }
 
-    public boolean checkRowMistake() {
+    public boolean checkColumnMistake() {
         for (int c = 0; c < 9; c++) {
             List<Integer> tmp = new ArrayList<Integer>();
             for (int r = 0; r < 9; r++) {
@@ -75,11 +80,17 @@ public class MistakeChecker implements SudokuObserver {
             return legal;
         }
         for (int i = 1; i < 10; i++) {
-            internalgrid.setCell(column, row, i);
-            if (!checkMistake()) {
-                legal.add(i);
+            try {
+                internalgrid.setCell(column, row, i);
+                if (!checkMistake()) {
+                    legal.add(i);
+                }
+                internalgrid.setCell(column, row, null);
             }
-            internalgrid.setCell(column, row, null);
+            catch (IllegalArgumentException e) {
+
+            }
+            
         }
         return legal;
     }
@@ -91,6 +102,14 @@ public class MistakeChecker implements SudokuObserver {
     public boolean checkMistake() {
         return checkRowMistake()||checkColumnMistake()||checkSquareMistake();
     }
+
+    public boolean checkWin() {
+        if (completedGrid() && !checkMistake()) {
+            return true;
+        }
+        return false;
+    }
+
 }
 
 
