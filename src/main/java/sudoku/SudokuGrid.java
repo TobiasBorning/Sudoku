@@ -1,7 +1,6 @@
 package sudoku;
 
 import java.io.FileNotFoundException;
-//import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,37 +11,53 @@ public class SudokuGrid {
     private List<Integer> gridInit;
     private FileManager fileManager = new FileManager();
 
-    public SudokuGrid(){
+    public SudokuGrid(){ //random contstructor
         RandomBoard init = new RandomBoard();
         List<Integer> randomboard = init.getRandomBoard();
         SetGrid(randomboard);
         gridInit = new ArrayList<Integer>(randomboard);
     }
 
-    public SudokuGrid(String filename) {
+    public SudokuGrid(SudokuGrid grid){ //clone constructor
+        this.grid = new ArrayList<Integer>(grid.GetGrid());
+        this.gridInit = new ArrayList<Integer>(grid.GetInitialGrid());
+    }
+
+    public SudokuGrid(String filename) { //file constructor
         List<Integer> loadedgrid;
         List<Integer> initgrid;
         try {
             loadedgrid = fileManager.readBoardFromFile(filename).get(0);
+            SetGrid(loadedgrid);
         }
         catch (FileNotFoundException e){
-            System.out.println("File not found");
-            loadedgrid = null;
+            throw new IllegalArgumentException("File not found");
         }
         try {
             initgrid = fileManager.readBoardFromFile(filename).get(1);
+            SetInitGrid(initgrid);
         }
         catch (FileNotFoundException e){
-            System.out.println("File not found");
-            initgrid = null;
+            throw new IllegalArgumentException("File not found");
         }
-        SetGrid(loadedgrid);
-        gridInit = new ArrayList<Integer>(initgrid);
+        
+        
     }
 
     public void SetGrid(List<Integer> grid) {
         if (grid.size() == 81) {
             this.grid = grid;
+        }
+        else {
+            throw new IllegalArgumentException("Wrong file format");
+        }
+    }
+    public void SetInitGrid(List<Integer> grid) {
+        if (grid.size() == 81) {
+            this.gridInit = grid;
+        }
+        else {
+            throw new IllegalArgumentException("Wrong file format");
         }
     }
 
@@ -74,15 +89,16 @@ public class SudokuGrid {
     
     public void setCell(int column, int row, Integer value){
         int index = calcIndex(column, row);
-        if (value == null) {
+        if (value == null && validCell(column, row)) {
             grid.set(index, null);
+            observers.stream().forEach(o->o.gridChanged(this));
         }
-        else if (((int)value > 0 || (int)value <= 9) && validCell(column, row)) {
+        else if (((int)value > 0 && (int)value <= 9) && validCell(column, row)) {
             grid.set(index, value);
             observers.stream().forEach(o->o.gridChanged(this));
         }
         else {
-            System.out.println("Illegal placement or value");
+            throw new IllegalArgumentException("Illegal value or placement");
         }
     }
  

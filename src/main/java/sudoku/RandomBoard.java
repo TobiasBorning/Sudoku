@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class RandomBoard {
-    HashMap<Integer,List<Integer>> boards = new HashMap<Integer,List<Integer>>();
+    private HashMap<Integer,List<Integer>> boards = new HashMap<Integer,List<Integer>>();
 
     private void CollectBoards(String filename) throws FileNotFoundException {
         Scanner scanner = new Scanner(new File(filename));

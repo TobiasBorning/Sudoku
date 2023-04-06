@@ -12,10 +12,19 @@ public class pathSavingAlgoritm extends MistakeChecker{
     HashMap<String,List<Integer>> map = new HashMap<String, List<Integer>>();
     ListIterator<String> keyIterator;
     List<String> paths = new ArrayList<String>();
+    List<String> sortedKeys;
     String path = "";
     String initcr;
 
     public void scanBoard() {
+        for (int c = 0; c< 9; c++) {
+            for (int r = 0; r < 9; r++) {
+                if (getLegalValues(c, r).size() == 1) {
+                    internalgrid.setCell(c, r, getLegalValues(c, r).get(0));
+                    System.out.println("Placed " + c + "," + r + ": " + getLegalValues(c, r).get(0));
+                }
+            }
+        }
         for (int c = 0; c< 9; c++) {
             for (int r = 0; r < 9; r++) {
                 String cr = c + "," +r;
@@ -26,6 +35,7 @@ public class pathSavingAlgoritm extends MistakeChecker{
 
     public void solve() {
         keyIterator = sortedKeys().listIterator();
+        sortedKeys = sortedKeys().stream().filter(e -> map.get(e).size() !=1).toList();
         String tmp = keyIterator.next();
         String[] tmp2 = tmp.split(",");
         initcr = tmp;
@@ -35,38 +45,34 @@ public class pathSavingAlgoritm extends MistakeChecker{
     public void iterationAlgorithm(int column, int row) {
         //System.out.println(column+","+row+" : " + map.get(column+","+row));
         //System.out.println(internalgrid);
-        System.out.println(path + " | " + paths.contains(path));
+        //System.out.println(path + " | ");
 
-        if (sortedKeys().indexOf(column+","+row) < sortedKeys().size()) {
+        if (sortedKeys.indexOf(column+","+row) < sortedKeys.size()) {
             boolean back = false;
             Integer current = internalgrid.getCell(column,row);
             List<Integer> valuelist= map.get(column+","+row);
 
-            if (valuelist.size() == 1) {
-                internalgrid.setCell(column, row, valuelist.get(0));
-                path += ""+valuelist.get(0);
-            }
-            else {
-                for (int i = 0; i <= valuelist.size(); i++) {
-                    if (i == valuelist.size() && (internalgrid.getCell(column, row) == null || internalgrid.getCell(column, row) == current)) {
+            
+            for (int i = 0; i <= valuelist.size(); i++) {
+                if (i == valuelist.size() && (internalgrid.getCell(column, row) == null || internalgrid.getCell(column, row) == current)) {
+                    internalgrid.setCell(column, row, null);
+                    back = true;
+                    break;
+                }
+                if (!paths.contains(path+valuelist.get(i)) && (current == null || valuelist.get(i) > current)) {
+                    internalgrid.setCell(column, row, valuelist.get(i));
+                    if (checkMistake()){
                         internalgrid.setCell(column, row, null);
-                        back = true;
-                        break;
                     }
-                    if (!paths.contains(path+valuelist.get(i)) && (current == null || valuelist.get(i) > current)) {
-                        internalgrid.setCell(column, row, valuelist.get(i));
-                        if (checkMistake()){
-                            internalgrid.setCell(column, row, null);
-                        }
-                        else {
-                            path += ""+valuelist.get(i);
-                            //System.out.println("Set: (" + column+","+row+"): " +valuelist.get(i) + " ," + valuelist + " path: " + path);
-                            //System.out.println(internalgrid);
-                            break;
-                        }
+                    else {
+                        path += ""+valuelist.get(i);
+                        //System.out.println("Set: (" + column+","+row+"): " +valuelist.get(i) + " ," + valuelist + " path: " + path);
+                        //System.out.println(internalgrid);
+                        break;
                     }
                 }
             }
+            
             
             if (!completedGrid()) {
                 String tmp;
@@ -125,16 +131,18 @@ public class pathSavingAlgoritm extends MistakeChecker{
         //MistakeChecker mistakeChecker = new MistakeChecker();
         pathSavingAlgoritm solve = new pathSavingAlgoritm();
         //FileManager mgr = new FileManager();
-
+        System.out.println(grid);
         grid.addObserver(solve);
-        solve.scanBoard();
-        System.out.println(solve.map);
-        System.out.println(solve.sortedKeys().size());
-        System.out.println(solve.map.keySet().stream().filter(e-> solve.map.get(e).size() != 0).count());
+        solve.internalgrid.setCell(0, 0, 8);
+        //solve.scanBoard();
+        System.out.println(grid);
+        System.out.println(solve.internalgrid);
+        //System.out.println(solve.map);
+        
         //System.out.println(grid.toString());
         
         try {
-            solve.solve();
+            //solve.solve();
         }
         catch (StackOverflowError e) {
             System.out.println(solve.paths.size());
@@ -143,8 +151,6 @@ public class pathSavingAlgoritm extends MistakeChecker{
             System.out.println(grid);
             System.out.println(solve.initcr + ": " + solve.map.get(solve.initcr));
         }
-        System.out.println(solve.internalgrid);
-        System.out.println(solve.path);
         
         //grid.setCell(3, 3, 8);
         //System.out.println(grid.toString());
