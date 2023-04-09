@@ -1,0 +1,22 @@
+#saveButton, #loadButton, #solveButton, #showSolutionButton {
+    -fx-background-color: #aaf3ad;
+    -fx-text-fill: rgb(62, 62, 62); 
+    -fx-font-family: "Druk Wide Bold";
+    -fx-border-color: #434343;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-border-radius: 2px;
+}
+#fileSaveField {
+    -fx-background-color: #e7e7e7;
+    -fx-font-family: "Helvetica Neue";
+}
+
+#loadFileInput, #saveFileInput {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: rgb(62, 62, 62); 
+    -fx-border-color: #434343;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-border-radius: 2px;
+}

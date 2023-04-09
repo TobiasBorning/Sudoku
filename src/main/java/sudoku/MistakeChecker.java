@@ -6,21 +6,12 @@ import java.util.List;
 public class MistakeChecker implements SudokuObserver {
     protected SudokuGrid internalgrid;
     
-    public void gridChanged(SudokuGrid grid) {
-        
+    public void gridInitialized(SudokuGrid grid) {
         internalgrid = new SudokuGrid(grid);
-
-        //System.out.println(checkSquareMistake());
-        //System.out.println(checkRowMistake());
-        //System.out.println(checkColumnMistake());
-        /*
-        if (checkMistake()) {
-            System.out.println("Illegal Placement");
-        } 
-        */
-        if (completedGrid()) {
-            System.out.println("Solved!");
-        }
+    }
+    
+    public void gridChanged(int column, int row, Integer value) {
+        internalgrid.setCell(column, row, value);
     }
 
     public SudokuGrid getInternalGrid() {

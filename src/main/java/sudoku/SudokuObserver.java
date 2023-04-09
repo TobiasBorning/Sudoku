@@ -1,5 +1,6 @@
 package sudoku;
 
 public interface SudokuObserver {
-    void gridChanged(SudokuGrid grid);
+    void gridChanged(int column, int row, Integer value);
+    void gridInitialized(SudokuGrid grid);
 }

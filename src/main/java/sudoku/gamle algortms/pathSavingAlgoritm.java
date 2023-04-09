@@ -9,28 +9,34 @@ import java.util.ArrayList;
 
 
 public class pathSavingAlgoritm extends MistakeChecker{
-    HashMap<String,List<Integer>> map = new HashMap<String, List<Integer>>();
-    ListIterator<String> keyIterator;
-    List<String> paths = new ArrayList<String>();
-    List<String> sortedKeys;
-    String path = "";
+    private HashMap<String,List<Integer>> map = new HashMap<String, List<Integer>>();
+    private  ListIterator<String> keyIterator;
+    private List<String> paths = new ArrayList<String>();
+    private List<String> sortedKeys;
+    private String path = "";
     String initcr;
+    private List<Integer> preAlgo;
 
     public void scanBoard() {
+        for (int i = 0; i < 2; i++) {
+            for (int c = 0; c< 9; c++) {
+                for (int r = 0; r < 9; r++) {
+                    if (internalgrid.getCell(c,r) == null && getLegalValues(c, r).size() == 1) {
+                        List<Integer> legalvalues = getLegalValues(c, r);
+                        internalgrid.setCell(c, r, legalvalues.get(0));
+                    }
+                }
+            } 
+        }
         for (int c = 0; c< 9; c++) {
             for (int r = 0; r < 9; r++) {
-                if (getLegalValues(c, r).size() == 1) {
-                    internalgrid.setCell(c, r, getLegalValues(c, r).get(0));
-                    System.out.println("Placed " + c + "," + r + ": " + getLegalValues(c, r).get(0));
+                if (internalgrid.getCell(c,r) == null) {
+                    String cr = c + "," +r;
+                    map.put(cr, getLegalValues(c, r));
                 }
             }
         }
-        for (int c = 0; c< 9; c++) {
-            for (int r = 0; r < 9; r++) {
-                String cr = c + "," +r;
-                map.put(cr, getLegalValues(c, r));
-            }
-        }
+        preAlgo = internalgrid.GetGrid();
     }
 
     public void solve() {
@@ -43,15 +49,13 @@ public class pathSavingAlgoritm extends MistakeChecker{
     }
 
     public void iterationAlgorithm(int column, int row) {
-        //System.out.println(column+","+row+" : " + map.get(column+","+row));
-        //System.out.println(internalgrid);
-        //System.out.println(path + " | ");
-
+        
+        System.out.println(path + " | ");
+        
         if (sortedKeys.indexOf(column+","+row) < sortedKeys.size()) {
             boolean back = false;
             Integer current = internalgrid.getCell(column,row);
             List<Integer> valuelist= map.get(column+","+row);
-
             
             for (int i = 0; i <= valuelist.size(); i++) {
                 if (i == valuelist.size() && (internalgrid.getCell(column, row) == null || internalgrid.getCell(column, row) == current)) {
@@ -72,22 +76,18 @@ public class pathSavingAlgoritm extends MistakeChecker{
                     }
                 }
             }
-            
-            
             if (!completedGrid()) {
                 String tmp;
+
                 if (back) {
-                    
                     tmp = keyIterator.previous();
                     if (tmp.equals(column+","+row)) {
                         tmp = keyIterator.previous();
                     }
                     paths.add(path);
                     path = path.substring(0,path.length()-1);
-    
                 }
                 else {
-
                     tmp = keyIterator.next();
                     if (tmp.equals(column+","+row)) {
                         tmp = keyIterator.next();
@@ -95,9 +95,6 @@ public class pathSavingAlgoritm extends MistakeChecker{
 
                 }
                 String[] tmp2 = tmp.split(",");
-                if (map.get(column+","+row).size() > 3) {
-                    System.out.println("");
-                }
                 column = Integer.parseInt(tmp2[0]);
                 row = Integer.parseInt(tmp2[1]);
                 iterationAlgorithm(column, row);
@@ -114,7 +111,6 @@ public class pathSavingAlgoritm extends MistakeChecker{
             List<List<Integer>> valuelist = new ArrayList<List<Integer>>(map.values());
             Comparator<List<Integer>> sizeSort = new ListSizeComparator();
             valuelist.sort(sizeSort);
-            valuelist = valuelist.stream().filter(l -> l.size()!=0).toList();
             List<String> keyList = new ArrayList<String>();
             for (List<Integer> value : valuelist) {
                 for (Entry<String,List<Integer>> entry: map.entrySet()) {
@@ -125,6 +121,16 @@ public class pathSavingAlgoritm extends MistakeChecker{
             }
             return keyList;
     }
+    
+    public int calculatePossiblePaths() {
+        int start = 1;
+        for (String coordinate : map.keySet()) {
+            if (map.get(coordinate).size() != 0) {
+                start = start * map.get(coordinate).size();
+            }
+        }
+        return start;
+    }
 
     public static void main(String[] args) {
         SudokuGrid grid = new SudokuGrid();
@@ -133,24 +139,24 @@ public class pathSavingAlgoritm extends MistakeChecker{
         //FileManager mgr = new FileManager();
         System.out.println(grid);
         grid.addObserver(solve);
-        solve.internalgrid.setCell(0, 0, 8);
-        //solve.scanBoard();
-        System.out.println(grid);
+        solve.scanBoard();
         System.out.println(solve.internalgrid);
-        //System.out.println(solve.map);
+        System.out.println(solve.map + "  :  " + solve.map.size());
+        System.out.println(solve.sortedKeys().get(0) + ": " + solve.map.get(solve.sortedKeys().get(0)));
         
         //System.out.println(grid.toString());
         
         try {
-            //solve.solve();
+            solve.solve();
         }
         catch (StackOverflowError e) {
-            System.out.println(solve.paths.size());
             System.out.println(solve.internalgrid);
-            grid.SetGrid(grid.GetInitialGrid());
-            System.out.println(grid);
             System.out.println(solve.initcr + ": " + solve.map.get(solve.initcr));
+            System.out.println("Failure");
         }
+
+        solve.internalgrid.SetGrid(solve.preAlgo);
+        System.out.println(solve.internalgrid);
         
         //grid.setCell(3, 3, 8);
         //System.out.println(grid.toString());

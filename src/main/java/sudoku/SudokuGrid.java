@@ -7,7 +7,7 @@ import java.util.List;
 public class SudokuGrid {
     private List<Integer> grid = new ArrayList<Integer>();
     private final int columnCount = 9;
-    private List<SudokuObserver> observers = new ArrayList<SudokuObserver>();
+    private List<SudokuObserver> observers;
     private List<Integer> gridInit;
     private FileManager fileManager = new FileManager();
 
@@ -16,11 +16,13 @@ public class SudokuGrid {
         List<Integer> randomboard = init.getRandomBoard();
         SetGrid(randomboard);
         gridInit = new ArrayList<Integer>(randomboard);
+        observers = new ArrayList<SudokuObserver>();
     }
 
     public SudokuGrid(SudokuGrid grid){ //clone constructor
         this.grid = new ArrayList<Integer>(grid.GetGrid());
         this.gridInit = new ArrayList<Integer>(grid.GetInitialGrid());
+        observers = new ArrayList<SudokuObserver>();
     }
 
     public SudokuGrid(String filename) { //file constructor
@@ -40,6 +42,7 @@ public class SudokuGrid {
         catch (FileNotFoundException e){
             throw new IllegalArgumentException("File not found");
         }
+        observers = new ArrayList<SudokuObserver>();
         
         
     }
@@ -52,6 +55,7 @@ public class SudokuGrid {
             throw new IllegalArgumentException("Wrong file format");
         }
     }
+    
     public void SetInitGrid(List<Integer> grid) {
         if (grid.size() == 81) {
             this.gridInit = grid;
@@ -78,8 +82,23 @@ public class SudokuGrid {
     }
 
     public void addObserver(SudokuObserver obs) {
-        observers.add(obs);
-        obs.gridChanged(this);
+        if (!observers.contains(obs)){
+            observers.add(obs);
+            obs.gridInitialized(this);
+        }
+        else {
+            throw new IllegalArgumentException("Observer is already an observer");
+        }
+        
+    }
+
+    public void removeObserver(SudokuObserver obs) {
+        if (observers.contains(obs)){
+            observers.remove(obs);
+        }
+        else {
+            throw new IllegalArgumentException("Observer is not already an observer");
+        }
     }
 
     public Integer getCell(int column, int row){
@@ -91,11 +110,11 @@ public class SudokuGrid {
         int index = calcIndex(column, row);
         if (value == null && validCell(column, row)) {
             grid.set(index, null);
-            observers.stream().forEach(o->o.gridChanged(this));
+            observers.stream().forEach(o->o.gridChanged(column,row,value));
         }
         else if (((int)value > 0 && (int)value <= 9) && validCell(column, row)) {
             grid.set(index, value);
-            observers.stream().forEach(o->o.gridChanged(this));
+            observers.stream().forEach(o->o.gridChanged(column,row,value));
         }
         else {
             throw new IllegalArgumentException("Illegal value or placement");
@@ -106,6 +125,10 @@ public class SudokuGrid {
         return row*columnCount + column;
     }
     
+    public boolean isEmpty() {
+        return grid.stream().filter(e -> e == null).count() == 81;
+    }
+
     public String toString() {
         String ut = "   0 1 2 3 4 5 6 7 8\n";
         
@@ -125,33 +148,24 @@ public class SudokuGrid {
     }
 
     public static void main(String[] args) {
-        SudokuGrid grid = new SudokuGrid("test1.txt");
+        SudokuGrid grid = new SudokuGrid();
         MistakeChecker mistakeChecker = new MistakeChecker();
-        RecursiveSolver solve = new RecursiveSolver();
-        FileManager mgr = new FileManager();
+        //FileManager mgr = new FileManager();
 
         grid.addObserver(mistakeChecker);
-        grid.addObserver(solve);
         
-        //System.out.println(grid.toString());
+        System.out.println(grid);
+        grid.setCell(0, 0, 8);
+        System.out.println(mistakeChecker.getInternalGrid());
+        System.out.println(grid);
 
-        
-        mgr.writeBoardToFile(grid, "test1.txt");
-        try {
-            grid.SetGrid(mgr.readBoardFromFile("test1.txt").get(0));
-        }
-        catch (FileNotFoundException e){
-            System.out.println("filen finnes ikke");
-        }
-        grid = new SudokuGrid("test1.txt");
+
         
 
         //grid.setCell(3, 3, 8);
         //System.out.println(grid.toString());
         //System.out.println(mistakeChecker.getLegalValues(3, 3));
-        
-        solve.solve();
-        
+
     
         
         
