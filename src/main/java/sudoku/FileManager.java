@@ -15,16 +15,16 @@ public class FileManager {
         try {
             File file = new File ("/Users/tobiasborning/NTNU/Objekt/prosjekt/TDT4100-prosjekt-tobiaslb/src/main/java/sudoku/sudokusaves/"+filename);
             PrintWriter writer = new PrintWriter(file);
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                    writer.write(""+board.get((i*9)+j)+",");
+            for (int r = 0; r < 9; r++) {
+                for (int c = 0; c < 9; c++) {
+                    writer.write(""+board.get((r*9)+c)+",");
                 }
                 writer.write("\n");
             }
             writer.write("init:\n");
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                    writer.write(""+initboard.get((i*9)+j)+",");
+            for (int r = 0; r < 9; r++) {
+                for (int c = 0; c < 9; c++) {
+                    writer.write(""+initboard.get((r*9)+c)+",");
                 }
                 writer.write("\n");
             }

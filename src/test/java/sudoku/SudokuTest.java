@@ -141,4 +141,19 @@ public class SudokuTest {
         assertEquals(sudokuGrid1.GetInitialGrid(), sudokuGrid2.GetInitialGrid());
     }
 
+    @Test 
+    void testRecursiveSolver() {
+        SudokuGrid sudokuGrid = new SudokuGrid();
+        RecursiveSolver solver = new RecursiveSolver();
+        MistakeChecker mistakeChecker = new MistakeChecker();
+        sudokuGrid.addObserver(solver);
+        
+        SudokuGrid solvedSudoku = solver.solve();
+        solvedSudoku.addObserver(mistakeChecker);
+
+        assertFalse(mistakeChecker.checkMistake());
+        assertTrue(mistakeChecker.checkWin());
+        
+    }
+
 }

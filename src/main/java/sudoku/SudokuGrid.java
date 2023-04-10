@@ -31,17 +31,13 @@ public class SudokuGrid {
         try {
             loadedgrid = fileManager.readBoardFromFile(filename).get(0);
             SetGrid(loadedgrid);
-        }
-        catch (FileNotFoundException e){
-            throw new IllegalArgumentException("File not found");
-        }
-        try {
             initgrid = fileManager.readBoardFromFile(filename).get(1);
             SetInitGrid(initgrid);
         }
         catch (FileNotFoundException e){
             throw new IllegalArgumentException("File not found");
         }
+        
         observers = new ArrayList<SudokuObserver>();
         
         

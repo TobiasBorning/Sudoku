@@ -14,8 +14,10 @@ public class SudokuApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Sudoku");
+        
         primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("MainScene.fxml"))));
         primaryStage.show();
+        
     }
     
 }

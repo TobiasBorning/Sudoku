@@ -128,7 +128,7 @@ public class SudokuController {
             if (!solved) {
                 solvedGrid = solver.solve();
                 System.out.println(solvedGrid);
-                feedbackLabel.setText("Solved!");
+                feedbackLabel.setText("Solution found!");
                 solved = true;
             }
         }
@@ -166,7 +166,13 @@ public class SudokuController {
         try {
 
             Integer value;
-            value = Integer.parseInt(cell.getText());
+            if (!cell.getText().equals("")) {
+                value = Integer.parseInt(cell.getText());
+            }
+            else {
+                value = null;
+            }
+            
             System.out.println(column +"," + row + " : " + value);
             try {
 
@@ -224,6 +230,10 @@ public class SudokuController {
                 
                 textField.setOnMouseEntered(e->{
                     //vannrett
+                    if(!textField.isEditable()) {
+                        textField.setStyle("-fx-font-size: 14px; -fx-font-family: \"Druk Wide Bold\"; -fx-font-weight: bold; -fx-text-fill: #c95db0");
+                    }
+
                     for (int r = 0; r < 9; r++) {
                         TextField tmp = (TextField) sudokuGrid.getChildren().get((r*9) + column);
                         //fyll bakkgrunn
@@ -249,6 +259,10 @@ public class SudokuController {
                 });
                 textField.setOnMouseExited(e->{
                     //vannrett
+                    if(!textField.isEditable()) {
+                        textField.setStyle("-fx-font-size: 14px; -fx-font-family: \"Druk Wide Bold\"; -fx-font-weight: bold; -fx-text-fill: #116611");
+                    }
+                    
                     for (int r = 0; r < 9; r++) {
                         TextField tmp = (TextField) sudokuGrid.getChildren().get((r*9) + column);
                         //fyll bakkgrunn

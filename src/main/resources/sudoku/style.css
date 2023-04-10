@@ -1,3 +1,4 @@
+
 #saveButton, #loadButton, #solveButton, #showSolutionButton {
     -fx-background-color: #aaf3ad;
     -fx-text-fill: rgb(62, 62, 62); 
@@ -7,6 +8,11 @@
     -fx-border-style: solid;
     -fx-border-radius: 2px;
 }
+#saveButton:hover, #loadButton:hover, #solveButton:hover, #showSolutionButton:hover {
+    -fx-background-color: #c95db0; /* Change background color to green */
+    -fx-text-fill: white; /* Change text color to white */
+}
+
 #fileSaveField {
     -fx-background-color: #e7e7e7;
     -fx-font-family: "Helvetica Neue";

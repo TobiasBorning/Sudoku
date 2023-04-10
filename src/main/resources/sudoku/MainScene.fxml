@@ -48,7 +48,7 @@
   <children>
     <AnchorPane fx:id="fileSaveField" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" stylesheets="@style.css" VBox.vgrow="ALWAYS">
       <children>
-        <Label id="title" alignment="CENTER" layoutX="212.0" layoutY="31.0" prefHeight="49.0" prefWidth="218.0" style="&#10;" text="Sudoku" textAlignment="CENTER" textFill="#656161" wrapText="false">
+        <Label id="title" alignment="CENTER" layoutX="212.0" layoutY="35.0" prefHeight="49.0" prefWidth="218.0" style="&#10;" text="Sudoku" textAlignment="CENTER" textFill="#656161" wrapText="false">
           <font>
             <Font name="Druk Wide Bold" size="38.0" />
           </font>
@@ -87,28 +87,28 @@
             <Line endX="290.0" endY="107.90420532226562" layoutX="205.0" layoutY="244.0" startX="-59.99998474121094" startY="107.90420532226562" stroke="#656161" strokeWidth="4.0" />
             <Line endX="55.66064453125" endY="225.0" layoutX="205.0" layoutY="244.0" startX="55.66064453125" startY="-125.60545349121094" stroke="#656161" strokeWidth="4.0" />
             <Line endX="79.21170043945312" endY="53.0" layoutX="300.0" layoutY="66.0" startX="79.21170043945312" startY="403.0" stroke="#656161" strokeWidth="4.0" />
-            <Button fx:id="loadButton" layoutX="381.0" layoutY="577.0" mnemonicParsing="false" onAction="#loadFile" text="Load" />
-            <TextField fx:id="loadFileInput" layoutX="148.0" layoutY="577.0" prefHeight="26.0" prefWidth="226.0" promptText="Name of save" />
-            <Button fx:id="solveButton" layoutX="145.0" layoutY="485.0" mnemonicParsing="false" onAction="#solve" prefHeight="31.0" prefWidth="152.0" text="Solve sudoku" />
-            <Label fx:id="feedbackLabel1" alignment="CENTER" layoutX="303.0" layoutY="489.0" prefHeight="23.0" prefWidth="154.0" style="&#10;" text="(unlocks advanced feedback)" textFill="#9f9f9f" wrapText="false">
+            <Button fx:id="loadButton" layoutX="398.0" layoutY="593.0" mnemonicParsing="false" onAction="#loadFile" text="Load" />
+            <TextField fx:id="loadFileInput" layoutX="165.0" layoutY="593.0" prefHeight="26.0" prefWidth="226.0" promptText="Name of save" />
+            <Button fx:id="solveButton" layoutX="162.0" layoutY="501.0" mnemonicParsing="false" onAction="#solve" prefHeight="31.0" prefWidth="152.0" text="Solve sudoku" />
+            <Label fx:id="feedbackLabel1" alignment="CENTER" layoutX="320.0" layoutY="505.0" prefHeight="23.0" prefWidth="154.0" style="&#10;" text="(unlocks advanced feedback)" textFill="#9f9f9f" wrapText="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Label>
-            <Button fx:id="showSolutionButton" layoutX="146.0" layoutY="527.0" mnemonicParsing="false" onAction="#showSolution" text="Show solution" />
-            <TextField fx:id="saveFileInput" layoutX="148.0" layoutY="642.0" prefHeight="26.0" prefWidth="226.0" promptText="Save sudoku as..." />
-            <Button fx:id="saveButton" layoutX="381.0" layoutY="642.0" mnemonicParsing="false" onAction="#saveFile" text="Save" />
-            <Label fx:id="feedbackLabel11" alignment="CENTER" layoutX="146.0" layoutY="607.0" prefHeight="23.0" prefWidth="162.0" style="&#10;" text="(no input loads random sudoku)" textFill="#9f9f9f" wrapText="false">
+            <Button fx:id="showSolutionButton" layoutX="163.0" layoutY="543.0" mnemonicParsing="false" onAction="#showSolution" text="Show solution" />
+            <TextField fx:id="saveFileInput" layoutX="165.0" layoutY="658.0" prefHeight="26.0" prefWidth="226.0" promptText="Save sudoku as..." />
+            <Button fx:id="saveButton" layoutX="398.0" layoutY="658.0" mnemonicParsing="false" onAction="#saveFile" text="Save" />
+            <Label fx:id="feedbackLabel11" alignment="CENTER" layoutX="163.0" layoutY="623.0" prefHeight="23.0" prefWidth="162.0" style="&#10;" text="(no input loads random sudoku)" textFill="#9f9f9f" wrapText="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Label>
-            <Label fx:id="feedbackLabel111" alignment="CENTER" layoutX="147.0" layoutY="671.0" prefHeight="23.0" prefWidth="88.0" style="&#10;" text="(.txt not needed)" textFill="#9f9f9f" wrapText="false">
+            <Label fx:id="feedbackLabel111" alignment="CENTER" layoutX="164.0" layoutY="687.0" prefHeight="23.0" prefWidth="88.0" style="&#10;" text="(.txt not needed)" textFill="#9f9f9f" wrapText="false">
                <font>
                   <Font size="12.0" />
                </font>
             </Label>
-            <Label fx:id="feedbackLabel12" alignment="CENTER" layoutX="305.0" layoutY="531.0" prefHeight="23.0" prefWidth="111.0" style="&#10;" text="(requires solving first)" textFill="#9f9f9f" wrapText="false">
+            <Label fx:id="feedbackLabel12" alignment="CENTER" layoutX="322.0" layoutY="547.0" prefHeight="23.0" prefWidth="111.0" style="&#10;" text="(requires solving first)" textFill="#9f9f9f" wrapText="false">
                <font>
                   <Font size="12.0" />
                </font>
