@@ -64,4 +64,15 @@ public class FileManager {
         scanner.close(); // har ikke .flush()
         return outArray;
     }
+    
+    public void deleteFile(String filename) {
+        File file = new File("/Users/tobiasborning/NTNU/Objekt/prosjekt/TDT4100-prosjekt-tobiaslb/src/main/java/sudoku/sudokusaves/"+filename);
+        if(file.exists()) {
+            file.delete();
+            System.out.println("File deleted successfully.");
+         } else {
+            System.out.println("File does not exist.");
+         }
+   
+    }
 }

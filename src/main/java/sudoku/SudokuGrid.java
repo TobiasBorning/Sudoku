@@ -40,7 +40,6 @@ public class SudokuGrid {
         
         observers = new ArrayList<SudokuObserver>();
         
-        
     }
 
     public void SetGrid(List<Integer> grid) {

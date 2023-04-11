@@ -1,13 +1,19 @@
 package sudoku;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
+import java.io.IOException;
 import java.util.List;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -23,6 +29,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
 public class SudokuController {
     @FXML
@@ -33,7 +40,8 @@ public class SudokuController {
     private Button saveButton, loadButton, solveButton, showSolutionButton;
     @FXML
     private TextField saveFileInput, loadFileInput;
-
+    //for å bytte scener
+    
     private SudokuGrid grid;
     private MistakeChecker mistakeChecker;
     private FileManager fileManager = new FileManager(); 
@@ -41,13 +49,22 @@ public class SudokuController {
     private SudokuGrid solvedGrid;
     private boolean solved;
     
+    public void switchToLoadSave(ActionEvent event) throws IOException {
+        Stage stage;
+        Scene scene;
+        Parent root = FXMLLoader .load(getClass().getResource("LoadSave.fxml")); 
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    } 
+
     public void initialize() {
         boardToScene(null);
         
     }
 
     private void boardToScene(String filename) {
-        solved = false;
         feedbackLabel.setText("");
         sudokuGrid.getChildren().clear();
         grid = null;
@@ -123,24 +140,25 @@ public class SudokuController {
     }
 
     public void solve() {
-        feedbackLabel.setText("Solving...");
-        try {
-            if (!solved) {
+        if (!solved) {
+            try {
                 solvedGrid = solver.solve();
                 System.out.println(solvedGrid);
                 feedbackLabel.setText("Solution found!");
                 solved = true;
+            
+            }
+            catch (Exception e) {
+                feedbackLabel.setText("Could not solve");
+                solved = false;
             }
         }
-        catch (Exception e) {
-            feedbackLabel.setText("Could not solve");
-            solved = false;
+        else {
+            feedbackLabel.setText("Allready solved");
         }
-        
     }
 
     public void showSolution() {
-        try {
             if (solved) {
                 String file = "tmpsoultion.txt";
                 fileManager.writeBoardToFile(solvedGrid, file);
@@ -149,10 +167,7 @@ public class SudokuController {
             else {
                 feedbackLabel.setText("You have to press <solve> before viewing the solution");
             }
-        }
-        catch (Exception e){
-            feedbackLabel.setText("Could not find solution");
-        }
+        
         
         
     }
@@ -230,10 +245,6 @@ public class SudokuController {
                 
                 textField.setOnMouseEntered(e->{
                     //vannrett
-                    if(!textField.isEditable()) {
-                        textField.setStyle("-fx-font-size: 14px; -fx-font-family: \"Druk Wide Bold\"; -fx-font-weight: bold; -fx-text-fill: #c95db0");
-                    }
-
                     for (int r = 0; r < 9; r++) {
                         TextField tmp = (TextField) sudokuGrid.getChildren().get((r*9) + column);
                         //fyll bakkgrunn
@@ -255,13 +266,17 @@ public class SudokuController {
                             setBackgroundColor(tmp, "#DDFFDD");
                         }
                     }
-                    
+                    //markert rute
+                    if(!textField.isEditable()) {
+                        textField.setStyle("-fx-font-size: 14px; -fx-font-family: \"Druk Wide Bold\"; -fx-font-weight: bold; -fx-text-fill: #c95db0");
+                    }
+                    else {
+                        textField.setStyle("-fx-font-size: 14px; -fx-font-family: \"Druk Wide Bold\"; -fx-font-weight: bold; -fx-text-fill: #fcfcfc");
+                        setBackgroundColor(textField, "#ebb1f3");
+                    }
                 });
                 textField.setOnMouseExited(e->{
                     //vannrett
-                    if(!textField.isEditable()) {
-                        textField.setStyle("-fx-font-size: 14px; -fx-font-family: \"Druk Wide Bold\"; -fx-font-weight: bold; -fx-text-fill: #116611");
-                    }
                     
                     for (int r = 0; r < 9; r++) {
                         TextField tmp = (TextField) sudokuGrid.getChildren().get((r*9) + column);
@@ -284,8 +299,16 @@ public class SudokuController {
                             setBackgroundColor(tmp, "#EEEEEE");
                         }
                     }
-                    
+                    //markert rute
+                    if(!textField.isEditable()) {
+                        textField.setStyle("-fx-font-size: 14px; -fx-font-family: \"Druk Wide Bold\"; -fx-font-weight: bold; -fx-text-fill: #116611");
+                    }
+                    else {
+                        textField.setStyle("-fx-font-size: 14px; -fx-font-family: \"Druk Wide Bold\"; -fx-font-weight: bold; -fx-text-fill: #000000");
+                        setBackgroundColor(textField, "#FFFFFF");
+                    }
                 });
+                
             }
             
         } 
@@ -311,18 +334,21 @@ public class SudokuController {
         
     }
 
-    public void loadFile() {
+    public void loadFile(String file) { //denne bør nok fjernes
         //clear old board
-        String file = loadFileInput.getText() + ".txt";
-        if (file.equals(".txt")) {
-            boardToScene(null); //laster et random brett ved tom input
-        }
-        else {
+        try {
             boardToScene(file); 
+            solved = false;
         }
-        loadFileInput.setText("");
-        System.out.println(grid); 
-        
+        catch (IllegalArgumentException e) {
+            boardToScene("empty.txt");
+            feedbackLabel.setText("Save not found");
+        }
+    }
+
+    public void loadRandomFile() {
+        solved = false;
+        boardToScene(null);
     }
 
 }

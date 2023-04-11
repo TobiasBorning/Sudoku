@@ -1,0 +1,73 @@
+.loadbutton {
+    -fx-background-color: #aaf3ad;
+    -fx-text-fill: rgb(62, 62, 62); 
+    -fx-font-size: 12px;
+    -fx-font-family: "Druk Wide Bold";
+    -fx-border-color: #434343;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+    -fx-border-radius: 2px;
+    -fx-pref-width: 70px;
+    -fx-translate-x: 205px;
+    -fx-translate-y: 20px;
+    
+}
+.deletebutton {
+    -fx-background-color: #da8b8b;
+    -fx-text-fill: rgb(62, 62, 62); 
+    -fx-font-size: 12px;
+    -fx-font-family: "Druk Wide Bold";
+    -fx-border-color: #434343;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+    -fx-border-radius: 2px;
+    -fx-pref-width: 100px;
+    -fx-translate-x: 280px;
+    -fx-translate-y: 20px;
+}
+.panecontainer {
+    -fx-background-color: #dedede;
+    -fx-text-fill: rgb(62, 62, 62); 
+    -fx-font-size: 12px;
+    -fx-font-family: "Druk Wide Bold";
+    -fx-border-color: #434343;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-style: solid;
+    -fx-border-radius: 0px;
+    -fx-pref-width: 395px;
+}
+.label {
+    -fx-font-size: 14px;
+    -fx-translate-x: 10px;
+    -fx-translate-y: 25px;
+    -fx-max-width: 190px;
+}
+#title {
+    -fx-font-size: 28px;
+    -fx-font-family: "Druk Wide Bold";
+    -fx-text-fill: #626262;
+    -fx-max-width: 400px;
+}
+
+.button:hover {
+    -fx-background-color: #c95db0;
+    -fx-text-fill: white;
+}
+
+.scrollPane {
+    -fx-border-color: #434343;
+    -fx-border-width: 4px;
+    -fx-border-style: solid;
+    -fx-border-radius: 2px;
+    -fx-background-color: #e7e7e7;
+}
+#fileListVBox {
+    -fx-border-color: #434343;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-border-radius: 2px;
+}
+
+#mainAnchorPane {
+    -fx-background-color: #e7e7e7;
+}

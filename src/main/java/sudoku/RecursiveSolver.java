@@ -15,15 +15,20 @@ public class RecursiveSolver extends MistakeChecker {
     private SudokuGrid solvedGrid = null;
 
     public void scanBoard() {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 5; i++) {
+            Boolean placed = false;
             for (int c = 0; c< 9; c++) {
                 for (int r = 0; r < 9; r++) {
                     if (internalgrid.getCell(c,r) == null && getLegalValues(c, r).size() == 1) {
                         List<Integer> legalvalues = getLegalValues(c, r);
                         internalgrid.setCell(c, r, legalvalues.get(0));
+                        placed = true;
                     }
                 }
-            } 
+            }
+            if (!placed) {
+                break;
+            }
         }
         for (int c = 0; c< 9; c++) {
             for (int r = 0; r < 9; r++) {
@@ -83,6 +88,7 @@ public class RecursiveSolver extends MistakeChecker {
             if (solvedGrid == null) {
                 solvedGrid = new SudokuGrid(internalgrid);
             }
+            return;
             
         }
     }
@@ -98,7 +104,6 @@ public class RecursiveSolver extends MistakeChecker {
 
         SudokuGrid solved = solver.solve();
         System.out.println(solved);
-        
-        
+    
     }
 }
