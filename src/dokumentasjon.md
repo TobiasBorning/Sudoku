@@ -17,7 +17,7 @@ De lagrede sudokuen finner du ved å trykke på browse saves, her finnes også t
 ## Del 2: Diagram
 Under er et sekvensdiagram der en bruker åpner appen og benytter "solve" knappen 
 
-![](/Sudoku%20sekvensdiagram.jpg)
+![](/assets/Sudoku%20sekvensdiagram.jpg)
 
 Merk her at kallene med firkantet boks rundt er forenklinger av et stort sett med kall.
 
